@@ -51,7 +51,7 @@
             font-size: 84px;
         }
 
-        .links {
+        .links.with-background {
             background: white;
             padding: 10px;
             border-radius: 20px;
@@ -94,7 +94,7 @@
             {{config('settings.system_title')}}
         </div>
 
-        <div class="links">
+        <div class="links with-background">
             <blockquote>
                 {{$quotes}}
             </blockquote>
