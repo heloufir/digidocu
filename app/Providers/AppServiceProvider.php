@@ -43,5 +43,9 @@ class AppServiceProvider extends ServiceProvider
 
         //observer
         File::observe(FileObserver::class);
+
+        if($this->app->environment('production')) {
+            \URL::forceScheme('https');
+        }
     }
 }
