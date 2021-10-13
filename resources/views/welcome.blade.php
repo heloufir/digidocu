@@ -51,6 +51,15 @@
             font-size: 84px;
         }
 
+        .links {
+            background: white;
+            padding: 10px;
+            border-radius: 20px;
+            box-shadow: 1px 1px 10px rgb(0 0 0 / 10%);
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
         .links > a {
             color: #636b6f;
             padding: 5px 20px;
