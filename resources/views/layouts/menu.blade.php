@@ -38,6 +38,14 @@
             <li class="{{ Request::is('admin/advanced/file-types*') ? 'active' : '' }}">
                 <a href="{!! route('fileTypes.index') !!}"><i class="fa fa-file-o"></i><span>{{ucfirst(config('settings.file_label_singular'))}} Types</span></a>
             </li>
+            <li class="{{ Request::is('admin/advanced/statuses*') ? 'active' : '' }}">
+                <a href="{!! route('statuses.index') !!}"><i
+                        class="fa fa-list"></i><span>Statuses</span></a>
+            </li>
+            <li class="{{ Request::is('admin/advanced/transitions*') ? 'active' : '' }}">
+                <a href="{!! route('transitions.index') !!}"><i
+                        class="fa fa-list-ol"></i><span>Transitions</span></a>
+            </li>
         </ul>
     </li>
 @endif

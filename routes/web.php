@@ -30,6 +30,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check_block']], func
         Route::resource('settings', 'SettingController');
         Route::resource('custom-fields', 'CustomFieldController', ['names' => 'customFields']);
         Route::resource('file-types', 'FileTypeController', ['names' => 'fileTypes']);
+        Route::resource('statuses', 'StatusController');
+        Route::resource('transitions', 'TransitionController');
     });
     Route::resource('users', 'UserController');
     Route::get('/users-block/{user}', 'UserController@blockUnblock')->name('users.blockUnblock');
