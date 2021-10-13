@@ -15,6 +15,7 @@ use App\Repositories\FileTypeRepository;
 use App\Repositories\PermissionRepository;
 use App\Repositories\TagRepository;
 use App\Tag;
+use App\Transition;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -132,7 +133,12 @@ class DocumentController extends Controller
         $this->authorize('view', $document);
 
         $missigDocMsgs = $this->documentRepository->buildMissingDocErrors($document);
-        $dataToRet = compact('document', 'missigDocMsgs');
+        if ($document->status_id) {
+            $transitions = Transition::where('status_from_id', $document->status_id)->get();
+        } else {
+            $transitions = Transition::whereNull('status_from_id')->get();
+        }
+        $dataToRet = compact('document', 'missigDocMsgs', 'transitions');
 
         if (auth()->user()->can('user manage permission')) {
             $users = User::where('id', '!=', 1)->get();
@@ -228,12 +234,17 @@ class DocumentController extends Controller
             $comment = " with comment: <i>" . $comment . "</i>";
         }
         $msg = "";
-        if ($action == 'approve') {
-            $this->documentRepository->approveDoc($document);
-            $msg = "Approved";
-        } elseif ($action == 'reject') {
-            $this->documentRepository->rejectDoc($document);
-            $msg = "Rejected";
+        $transition = Transition::where('id', $action)->first();
+        if ($transition) {
+            $document->status_id = $transition->status_to_id;
+            $document->save();
+            if ($transition->is_verified) {
+                $this->documentRepository->approveDoc($document);
+                $msg = "Approved";
+            } else {
+                $this->documentRepository->rejectDoc($document);
+                $msg = "Rejected";
+            }
         } else {
             abort(404);
         }

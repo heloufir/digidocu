@@ -11,7 +11,8 @@ class Transition extends Model
 
     public $fillable = [
         'status_from_id',
-        'status_to_id'
+        'status_to_id',
+        'is_verified'
     ];
 
     /**
@@ -21,7 +22,8 @@ class Transition extends Model
      */
     protected $casts = [
         'status_from_id' => 'integer',
-        'status_to_id' => 'integer'
+        'status_to_id' => 'integer',
+        'is_verified' => 'boolean'
     ];
 
     /**
@@ -31,7 +33,8 @@ class Transition extends Model
      */
     protected $appends = [
         'status_from_name',
-        'status_to_name'
+        'status_to_name',
+        'is_verified_formatted'
     ];
 
     /**
@@ -42,6 +45,7 @@ class Transition extends Model
     public static $rules = [
         'status_from_id' => 'nullable|exists:statuses,id',
         'status_to_id' => 'required|exists:statuses,id',
+        'is_verified' => 'nullable|boolean'
     ];
 
     /**
@@ -66,5 +70,9 @@ class Transition extends Model
 
     public function getStatusToNameAttribute() {
         return $this->statusTo->name;
+    }
+
+    public function getIsVerifiedFormattedAttribute() {
+        return $this->is_verified ? 'Yes' : 'No';
     }
 }

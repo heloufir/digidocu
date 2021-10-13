@@ -73,6 +73,10 @@ class TransitionDataTable extends DataTable
             'status_to' => [
                 'data' => 'status_to_name',
                 'searchable' => false
+            ],
+            'is_verified' => [
+                'data' => 'is_verified_formatted',
+                'searchable' => false
             ]
         ];
     }

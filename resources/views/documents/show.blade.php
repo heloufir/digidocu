@@ -42,6 +42,21 @@
             bottom: -4px;
             right: 10px;
         }
+
+        .transition-btn {
+            background-color: transparent;
+            outline: none;
+            box-shadow: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 5px 10px;
+        }
+
+        .transition-btn:hover {
+            background-color: rgba(119, 119, 119, .05);
+            cursor: pointer;
+        }
     </style>
 @stop
 @section('scripts')
@@ -348,31 +363,50 @@
                         </div>
                         @can('verify', $document)
                             <div class="tab-pane" id="tab_verification">
-                                @if ($document->status!=config('constants.STATUS.APPROVED'))
-                                    {!! Form::open(['route' => ['documents.verify', $document->id], 'method' => 'post']) !!}
-                                    <div class="form-group text-center">
-                                    <textarea class="form-control" name="vcomment" id="vcomment" rows="4"
-                                              placeholder="Enter Comment to verify with comment(optional)"></textarea>
+                                @if ($document->status==config('constants.STATUS.APPROVED'))
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <span class="label label-success">Verified</span>
+                                        </div>
+                                        <div class="form-group">
+                                            Verifier: <b>{{$document->verifiedBy->name}}</b>
+                                        </div>
+                                        <div class="form-gorup">
+                                            Verified At: <b>{{formatDateTime($document->verified_at)}}</b>
+                                            ({{\Carbon\Carbon::parse($document->verified_at)->diffForHumans()}})
+                                        </div>
                                     </div>
-                                    <div class="form-group text-center">
-                                        <button class="btn btn-success" type="submit" name="action" value="approve"><i
-                                                class="fa fa-check"></i> Approve
-                                        </button>
-                                        <button class="btn btn-danger" type="submit" name="action" value="reject"><i
-                                                class="fa fa-close"></i> Reject
-                                        </button>
-                                    </div>
-                                    {!! Form::close() !!}
-                                @else
-                                    <div class="form-group">
-                                        <span class="label label-success">Verified</span>
-                                    </div>
-                                    <div class="form-group">
-                                        Verifier: <b>{{$document->verifiedBy->name}}</b>
-                                    </div>
-                                    <div class="form-gorup">
-                                        Verified At: <b>{{formatDateTime($document->verified_at)}}</b>
-                                        ({{\Carbon\Carbon::parse($document->verified_at)->diffForHumans()}})
+                                    <hr style="opacity: .1">
+                                @endif
+                                @if ($transitions->count())
+                                    <div class="col-12">
+                                        {!! Form::open(['route' => ['documents.verify', $document->id], 'method' => 'post']) !!}
+                                            <h5 class="text-bold">Change document status</h5>
+                                            <div class="form-group text-center">
+                                            <textarea class="form-control" name="vcomment" id="vcomment" rows="4"
+                                                      placeholder="Enter Comment to verify with comment(optional)"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="btn-group" role="group">
+                                                    @if($transitions->count() > 1)
+                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            Update status
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            @foreach($transitions as $transition)
+                                                                <li>
+                                                                    <button class="transition-btn text-{{ $transition->is_verified ? 'success' : 'danger' }}" type="submit" name="action" value="{{ $transition->id }}"><i class="fa fa-{{ $transition->is_verified ? 'check' : 'times' }}"></i> {{ $transition->status_to_name }}</button>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @else
+                                                        @php $transition = $transitions->first(); @endphp
+                                                        <button class="btn btn-{{ $transition->is_verified ? 'success' : 'danger' }}" type="submit" name="action" value="{{ $transition->id }}"><i class="fa fa-{{ $transition->is_verified ? 'check' : 'times' }}"></i> {{ $transition->status_to_name }}</button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        {!! Form::close() !!}
                                     </div>
                                 @endif
                             </div>

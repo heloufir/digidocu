@@ -55,7 +55,8 @@ class Document extends Model
         'created_by',
         'custom_fields',
         'verified_at',
-        'verified_by'
+        'verified_by',
+        'status_id'
     ];
 
     /**
@@ -70,7 +71,8 @@ class Document extends Model
         'status' => 'string',
         'created_by' => 'integer',
         'verified_by' => 'integer',
-        'custom_fields' => 'array'
+        'custom_fields' => 'array',
+        'status_id' => 'integer'
     ];
 
     /**
@@ -82,7 +84,8 @@ class Document extends Model
         'name' => 'required',
         'description' => 'nullable',
         'tags' => 'required',
-        'custom_fields' => 'nullable'
+        'custom_fields' => 'nullable',
+        'status_id' => 'nullable|exists:statuses,id'
     ];
 
     /**
@@ -99,6 +102,14 @@ class Document extends Model
     public function verifiedBy()
     {
         return $this->belongsTo(\App\User::class, 'verified_by', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function statusObj()
+    {
+        return $this->belongsTo(\App\Status::class, 'status_id', 'id');
     }
 
     public function tags()
