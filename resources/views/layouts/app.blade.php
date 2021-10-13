@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{asset('vendor/bootstrap-wysihtml5/css/bootstrap3-wysihtml5.min.css')}}">
     <link rel="stylesheet" href="{{asset('vendor/bootstrap-tagsinput/css/bootstrap-tagsinput.css')}}">
     <link rel="stylesheet" href="{{asset('css/digidocu-custom.css')}}">
+    <link rel="shortcut icon" href="{{asset('favicon.png')}}">
     @yield('css')
 </head>
 
