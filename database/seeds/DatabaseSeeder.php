@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\WorkflowSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,7 +16,8 @@ class DatabaseSeeder extends Seeder
             SettingsTableSeeder::class,
             UsersTableSeeder::class,
             PermissionsTableSeeder::class,
-            FileTypesSeeder::class
+            FileTypesSeeder::class,
+            WorkflowSeeder::class
         ]);
     }
 }
