@@ -29,7 +29,7 @@ class TransitionDataTable extends DataTable
      */
     public function query(Transition $model)
     {
-        return $model->newQuery();
+        return $model->with(['statusFrom', 'statusTo'])->newQuery();
     }
 
 
@@ -66,8 +66,14 @@ class TransitionDataTable extends DataTable
     {
         return [
             'id',
-            'status_from_name',
-            'status_to_name'
+            'status_from' => [
+                'data' => 'status_from_name',
+                'searchable' => false
+            ],
+            'status_to' => [
+                'data' => 'status_to_name',
+                'searchable' => false
+            ]
         ];
     }
 
